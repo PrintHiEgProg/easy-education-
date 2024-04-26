@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Easy Education</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.4.0/dist/tesseract.min.js"></script>
+</head>
+<body>
+    <input type="file" id="myFile" capture="environment" accept="image/*">
+    <h1 id="textOutput"></h1>
+
+    <script>
+        const fileInput = document.getElementById('myFile');
+        const textOutput = document.getElementById('textOutput');
+
+        fileInput.addEventListener('change', function() {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const imageBase64 = e.target.result;
+
+                // Используем Tesseract.js для распознавания текста на изображении
+                Tesseract.recognize(
+                    imageBase64,
+                    'eng',
+                    { logger: m => console.log(m) }
+                ).then(({ data: { text } }) => {
+                    textOutput.innerText = text;
+                });
+            };
+
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>

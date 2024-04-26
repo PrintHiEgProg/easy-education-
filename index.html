@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Загрузка изображения</title>
+</head>
+<body>
+    <input type="file" id="myFile" capture="environment" accept="image/*">
+    <img id="myImage" src="" alt="">
+
+    <script>
+        const fileInput = document.getElementById('myFile');
+        const imageElement = document.getElementById('myImage');
+
+        const teser = require('tesseract.js');
+
+fileInput.addEventListener('change', (e) => {
+  const fileInfo = e.target.files[0];
+    console.log(`Файл: ${fileInfo.name}`)
+});
+
+teser.recognize(fileInfo.name, 'rus', {
+    logger: e => {
+        console.log(e)
+    };
+})
+    .then(out => {
+        let text = out.data.text.replace(/\n/g, ' ');
+        console.log('вот что я прочитал :', text)
+    });
+
+    </script>
+</body>
+</html>
